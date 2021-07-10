@@ -62,3 +62,35 @@ def foo():
     print("foo")
 
 print(foo.__name__)
+
+#<singleton>
+import functools
+
+def singleton(cls):
+    instance = None
+    
+    @functools.wraps(cls)
+    def inner(*args, **kwargs):
+        nonlocal instance
+        if instance is None:
+            instance = cls(*args, **kwargs)
+        return instance
+    
+    return inner
+
+class MyClass:
+    """Do nothing"""
+
+first, second = MyClass(), MyClass()
+first is second  # False
+first.__hash__()  # 8739171885120
+second.__hash__()  # 8739171885085
+
+@singleton
+class MyClass:
+    """Do nothing"""
+    
+first, second = MyClass(), MyClass()
+first is second  # True
+first.__hash__()  # 8739171902840
+second.__hash__()  # 8739171902840
