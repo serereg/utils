@@ -46,3 +46,19 @@ def reverse_string(string):
 # "maps, snipe, percale, macaroni, a gag, a banana bag, a tan, a tag,"
 # "a banana bag again (or a camel), a crepe, pins, Spam, a rut, a Rolo, cash,"
 # "a jar, sore hats, a peon, a canal: Panama!"))
+
+import functools  # "functools" может нам с этим помочь
+def bar(func):
+    # Объявляем "wrapper" оборачивающим "func"
+    # и запускаем магию:
+    @functools.wraps(func)
+    def wrapper():
+        print("bar")
+        return func()
+    return wrapper
+
+@bar
+def foo():
+    print("foo")
+
+print(foo.__name__)
